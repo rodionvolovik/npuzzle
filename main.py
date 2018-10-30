@@ -2,7 +2,6 @@ import argparse
 import sys
 from Solver import Solver
 from Board import Board
-from heuristics import *
 from parsing_utilities import generate_aim_puzzle, read_file
 import npuzzle_gen
 
@@ -32,28 +31,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     solver = Solver(board, args.heuristic)
-    solver.solve(board)
+    result = solver.solve(board)
+    print(result[0].puzzle_tuple, result[1], result[2])
 
     # if type == 'grd':
     #     DEPTH = 0
     # elif type == 'ufm':
     #     HEUR = 0
-
-    # #start_time = time.time()
-    # if heuristic == 'M':
-    #     x, lenopen, max = Np.findpath(h_manhattan)
-    # elif heuristic == 'Mlsq':
-    #     x, lenopen, max = Np.findpath(h_manhattan_lsq)
-    # elif heuristic == 'E':
-    #     x, lenopen, max = Np.findpath(h_linear)
-    # elif heuristic == 'Elsq':
-    #     x, lenopen, max = Np.findpath(h_linear_lsq)
-    # #print("time =", time.time() - start_time)
-
-
-
-
-
     # path = []
     # while x.parent:
     #     path.append(x)
@@ -66,16 +50,3 @@ if __name__ == "__main__":
     # print("openstate = ", lenopen)
     # print("number of movies = ", len(path))
     # print("max number of states in memory = ", max)
-
-
-
-    # while True:
-    #     text = raw_input("Search is over. Do you want to see all steps ? [y/n]: ")
-    #     if text == 'y' or text == 'Y':
-    #         for i in path:
-    #             for line in i.matrix:
-    #                 print(line)
-    #             print("")
-    #         break
-    #     elif text == 'N' or text == 'n':
-    #         break
