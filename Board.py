@@ -53,18 +53,22 @@ class Board:
     def state_new(self, row_0, col_0, row, col):
         import sys
         pos_0 = row_0 * self.size + col_0
-        print(row, col, row_0, col_0, pos_0)
+        # print(row, col, row_0, col_0, pos_0)
         pos = row * self.size + col
         new_puzzle = list(self.puzzle)
         new_puzzle[pos_0] = new_puzzle[pos]
         new_puzzle[pos] = 0
-        print(self.puzzle, new_puzzle)
-        return Board(self.size, new_puzzle)
+        # print(self.puzzle, new_puzzle)
+
+        new_board = Board(self.size, new_puzzle)
+        new_board.depth = self.depth + 1
+        new_board.parent = self
+        return new_board
 
 
     def get_next_states(self):
         row_0, col_0 = self.find_empty_element()
-        print("EMPTY_ELEMENT", row_0, col_0)
+        # print("EMPTY_ELEMENT", row_0, col_0)
         states = []
         if row_0 > 0:
             states.append((row_0 - 1, col_0))

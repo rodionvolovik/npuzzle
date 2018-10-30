@@ -26,27 +26,24 @@ if __name__ == "__main__":
     else:
         board = Board(args.size, npuzzle_gen.make_puzzle(args.size, True, args.iteration))
 
-    if not board.is_solvable():
-        print("ERROR - Puzzle is not solvable")
-        sys.exit(1)
+    # @todo check solvability
+    # if not board.is_solvable():
+    #     print("ERROR - Puzzle is not solvable")
+    #     sys.exit(1)
 
     solver = Solver(board, args.heuristic)
     result = solver.solve(board)
-    print(result[0].puzzle_tuple, result[1], result[2])
+    print("RESULT", result[0], result[1], result[2])
 
-    # if type == 'grd':
-    #     DEPTH = 0
-    # elif type == 'ufm':
-    #     HEUR = 0
-    # path = []
-    # while x.parent:
-    #     path.append(x)
-    #     x = x.parent
-    # path.reverse()
-    # # i = 0
-    # # for t in T:
-    # #     i = i + t
-    # # print(i)
-    # print("openstate = ", lenopen)
-    # print("number of movies = ", len(path))
-    # print("max number of states in memory = ", max)
+    path = []
+    x = result[0]
+    while x.parent:
+        path.append(x)
+        x = x.parent
+    path.reverse()
+
+    for p in path:
+        print(p.puzzle_tuple[0])
+        print(p.puzzle_tuple[1])
+        print(p.puzzle_tuple[2])
+        print("------")
