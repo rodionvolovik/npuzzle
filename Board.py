@@ -36,14 +36,14 @@ class Board:
         return inversion
 
     def is_solvable(self, goal):
-        inversion = self.get_inversion()
+        inversion_self = self.get_inversion()
         inversion_goal = goal.get_inversion()
 
         if self.size % 2:
             inversion_goal += goal.puzzle.index(0)
-            inversion = self.puzzle.index(0)
+            inversion_self = self.puzzle.index(0)
 
-        return not inversion_goal % 2 == inversion % 2
+        return not inversion_goal % 2 == inversion_self % 2
 
     def create_coordinate_list(self):
         coordinates = {}

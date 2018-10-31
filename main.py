@@ -28,11 +28,6 @@ if __name__ == "__main__":
 
     goal = Board(board.size, generate_goal_puzzle(board.size))
     print(goal)
-    goal1 = Board(4, generate_goal_puzzle(4))
-    print(goal1)
-    goal2 = Board(5, generate_goal_puzzle(5))
-    print(goal2)
-    sys.exit()
     if not board.is_solvable(goal):
         print("WhOOOPS! Puzzle is not solvable")
         print(board)
