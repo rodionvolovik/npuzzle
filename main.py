@@ -29,6 +29,7 @@ if __name__ == "__main__":
 
     if board.is_solvable():
         print("OOOPS! Puzzle is not solvable")
+        print(board)
         sys.exit()
 
     goal = generate_goal_puzzle(board.size)
