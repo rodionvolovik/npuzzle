@@ -27,6 +27,36 @@ class Board:
             return False
         return self.heur + self.depth < other.heur + other.depth
 
+    def get_inversion(self):
+        inversion = 0
+        for i in range(self.size ** 2 - 1):
+            for j in range(i + 1, self.size ** 2):
+                if self.puzzle[i] and self.puzzle[j] and self.puzzle[i] > self.puzzle[j]:
+                    inversion += 1
+
+        return inversion
+
+    def is_solvable(self):
+        inversion = self.get_inversion()
+
+        if (self.size & 1):
+            return not inversion & 1
+        else:
+            pos_0 = self.puzzle.index(0) / self.size
+            print(self.puzzle, pos_0)
+            if pos_0 & 1:
+                return not inversion & 1
+            else:
+                return inversion & 1
+
+    def create_coordinate_list(self):
+        coordinates = {}
+        for i in range(0, self.size ** 2):
+            value = self.puzzle.index(i)
+            col, row = value / self.size, abs(value - value / self.size * self.size)
+            coordinates[value] = [col, row]
+        return coordinates
+
     def state_new(self, empty_cell, x):
         new_puzzle = list(self.puzzle)
         new_puzzle[empty_cell] = new_puzzle[empty_cell + x]

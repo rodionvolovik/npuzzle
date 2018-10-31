@@ -1,10 +1,10 @@
-
+import time
 import argparse
-import sys
 from Solver import Solver
 from Board import Board
 from parsing_utilities import generate_goal_puzzle, read_file
 import npuzzle_gen
+import sys
 
 
 # @ todo fix when size is even number
@@ -13,11 +13,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='npuzzle')
     parser.add_argument('-p', '--path', type=str, default=False, help="Path to source file with puzzle")
     parser.add_argument('-heur', '--heuristic', type=str, help="Heusristic function for calculations",
-                        choices=['M', 'Mlsq', 'E', "Elsq"], default='M')
+                        choices=['M', 'E', "T"], default='M')
     parser.add_argument('-i', '--iteration', type=int, help="Iterations for generation of a new puzzle",
                         default=60)
     parser.add_argument('-s', '--size', type=int, help="Size of puzzle", default=3)
-    parser.add_argument('-type', '--greedy', default=False, type=str, choices=['greedy', 'uniform-cost'])
+    parser.add_argument('-t', '--type', default=False, type=str, choices=['g', 'uc'])
     args = parser.parse_args()
 
     # Extract data and/or generate a new puzzle
@@ -27,18 +27,26 @@ if __name__ == "__main__":
     else:
         board = Board(args.size, npuzzle_gen.make_puzzle(args.size, True, args.iteration))
 
-    # @todo check solvability
-    # if not board.is_solvable():
-    #     print("OOOPS! Puzzle is not solvable")
-    #     sys.exit(1)
+    if board.is_solvable():
+        print("OOOPS! Puzzle is not solvable")
+        sys.exit()
 
     goal = generate_goal_puzzle(board.size)
-    solver = Solver(board.size, Board(board.size, goal), args.heuristic)
+    solver = Solver(board.size, Board(board.size, goal), args.heuristic, args.type)
+
+    time_start = time.time()
     path, max_memory, openstate_len = solver.solve(board)
+    calculation_time = time.time() - time_start
+
+    if path == None:
+        import sys
+        print("OOOPS! Puzzle is unsolvable")
+        sys.exit()
 
     print("\nMaximum memory used is = %d" % max_memory)
     print("Openstates lost after resolving = %d" % openstate_len)
     print("Moves made to solve = %d" % len(path))
+    print("Time spent for calculations %.2f s" % calculation_time)
     print("Authors: rvolovik, vpopovyc")
 
     quit = ''
