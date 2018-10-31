@@ -30,7 +30,6 @@ def read_file(path_to_file):
         if line.strip().startswith("#") or line == "":
             continue
         lines.append(line)
-    print(lines)
     for line in lines:
         if size == 0:
             match = re.match("^([0-9]+\s?)", line)
@@ -56,42 +55,98 @@ def read_file(path_to_file):
 
 # @todo do refactor
 def generate_goal_puzzle(size):
-    k = size ** 2
-    matrix_goal = [[0 for i in range(size)] for j in range(size)]
-    elements_position = k * [[None, None]]
-    # Fills column sequence
-    def fill_row(row, col, flag, num):
-        i = col
-        while i in range(size) and matrix_goal[row][i] == 0:
-            matrix_goal[row][i] = num
-            elements_position[num - 1] = [row, i]
-            num = num + 1
-            i = i + flag
-        if num > k:
-            return
-        if flag == 1:
-            fill_col(row + 1, i - 1, 1, num)
-        else:
-            fill_col(row - 1, i + 1, -1, num)
-    # Fills row sequence
-    def fill_col(row, column, flag, num):
-        i = row
-        while i in range(size) and matrix_goal[i][column] == 0:
-            matrix_goal[i][column] = num
-            elements_position[num - 1] = [i, column]
-            num = num + 1
-            i = i + flag
-        if num > k:
-            return
-        if flag == -1:
-            fill_row(i + 1, column + 1,  1, num)
-        else:
-            fill_row(i - 1, column - 1,  -1, num)
-    fill_row(0, 0, 1, 1)
-    matrix_goal[elements_position[k - 1][0]][elements_position[k - 1][1]] = 0
-    puzzle = []
-    for i in range(size):
-        for j in range(size):
-            puzzle.append(matrix_goal[i][j])
-    return puzzle
+    # k = size ** 2
+    # matrix_goal = [[0 for i in range(size)] for j in range(size)]
+    # elements_position = k * [[None, None]]
+    # # Fills column sequence
+    # def fill_row(row, col, flag, num):
+    #     i = col
+    #     while i in range(size) and matrix_goal[row][i] == 0:
+    #         matrix_goal[row][i] = num
+    #         elements_position[num - 1] = [row, i]
+    #         num = num + 1
+    #         i = i + flag
+    #     if num > k:
+    #         return
+    #     if flag == 1:
+    #         fill_col(row + 1, i - 1, 1, num)
+    #     else:
+    #         fill_col(row - 1, i + 1, -1, num)
+    # # Fills row sequence
+    # def fill_col(row, column, flag, num):
+    #     i = row
+    #     while i in range(size) and matrix_goal[i][column] == 0:
+    #         matrix_goal[i][column] = num
+    #         elements_position[num - 1] = [i, column]
+    #         num = num + 1
+    #         i = i + flag
+    #     if num > k:
+    #         return
+    #     if flag == -1:
+    #         fill_row(i + 1, column + 1,  1, num)
+    #     else:
+    #         fill_row(i - 1, column - 1,  -1, num)
+    # fill_row(0, 0, 1, 1)
+    # matrix_goal[elements_position[k - 1][0]][elements_position[k - 1][1]] = 0
+    # puzzle = []
+    # for i in range(size):
+    #     for j in range(size):
+    #         puzzle.append(matrix_goal[i][j])
+    # return puzzle
+    goLeft = True
+    goRight = False
+    matrix_goal = [0 for i in range(size ** 2)]
+    # print(matrix_goal)
+
+    def is_filled(x):
+        if x >= size ** 2 - 1:
+            return True
+        return False
+
+    i = 0
+    index = -1
+    moves_size = size
+    horisontal = 1
+    vertical = size
+    number = 0
+    while True:
+        # right
+        for move_step in range(moves_size):
+            number += 1
+            index += horisontal
+            matrix_goal[index] = number
+        if is_filled(number):
+            break
+        moves_size -= 1
+
+        # bottom
+        for move_step in range(moves_size):
+            index += vertical
+            number += 1
+            matrix_goal[index] = number
+        if is_filled(number):
+            break
+
+        # left
+        for move_step in range(moves_size):
+            index -= horisontal
+            number += 1
+            matrix_goal[index] = number
+        moves_size -= 1
+        if is_filled(number):
+            break
+
+        # top
+        for move_step in range(moves_size):
+            index -= vertical
+            number += 1
+            matrix_goal[index] = number
+        # print(matrix_goal)
+        if is_filled(number):
+            break
+
+        if moves_size <= 0:
+            return matrix_goal
+
+    return matrix_goal
 

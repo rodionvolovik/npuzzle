@@ -42,7 +42,6 @@ class Board:
         if self.size % 2:
             inversion_goal += goal.puzzle.index(0)
             inversion = self.puzzle.index(0)
-        print(inversion, inversion_goal)
 
         return not inversion_goal % 2 == inversion % 2
 

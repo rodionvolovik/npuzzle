@@ -27,8 +27,12 @@ if __name__ == "__main__":
         board = Board(args.size, npuzzle_gen.make_puzzle(args.size, True, args.iteration))
 
     goal = Board(board.size, generate_goal_puzzle(board.size))
-
-    print(board.puzzle)
+    print(goal)
+    goal1 = Board(4, generate_goal_puzzle(4))
+    print(goal1)
+    goal2 = Board(5, generate_goal_puzzle(5))
+    print(goal2)
+    sys.exit()
     if not board.is_solvable(goal):
         print("WhOOOPS! Puzzle is not solvable")
         print(board)

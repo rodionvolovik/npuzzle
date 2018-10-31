@@ -31,8 +31,6 @@ class Solver:
             value2 = self.goal.puzzle.index(i)
             x1, y1 = value1 / board.size, abs(value1 - value1 / board.size * board.size)
             x2, y2 = value2 / board.size, abs(value2 - value2 / board.size * board.size)
-            # x1, y1 = board.coordinates[i][0], board.coordinates[i][1]
-            # x2, y2 = self.goal.coordinates[i][0], self.goal.coordinates[i][1]
             estimate += abs(x1 - x2) + abs(y1 - y2)
         return estimate
 
@@ -43,8 +41,6 @@ class Solver:
             value2 = self.goal.puzzle.index(i)
             x1, y1 = value1 / board.size, abs(value1 - value1 / board.size * board.size)
             x2, y2 = value2 / board.size, abs(value2 - value2 / board.size * board.size)
-            # x1, x2 = board.coordinates[i][0], board.coordinates[i][1]
-            # x1, x2 = self.goal.coordinates[i][0], self.goal.coordinates[i][1]
             estimate += math.sqrt(abs(x1 - x2) ** 2 + abs(y1 - y2) ** 2)
         return estimate
 
@@ -58,6 +54,8 @@ class Solver:
             if (x1 - x2) + (y1 - y2) != 0:
                 estimate += 1
         return estimate
+            # x1, y1 = board.coordinates[i][0], board.coordinates[i][1]
+            # x2, y2 = self.goal.coordinates[i][0], self.goal.coordinates[i][1]
 
 
     # A* algorithm implementation
@@ -86,7 +84,6 @@ class Solver:
 
             neighbours = current.get_neighbours()
             for neighbour in neighbours:
-                # print(neighbour)
                 is_closed = closed_states.get(neighbour.hashsum)
                 if is_closed != None:
                     continue
