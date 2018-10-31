@@ -48,7 +48,7 @@ class Solver:
             estimate += math.sqrt(abs(x1 - x2) ** 2 + abs(y1 - y2) ** 2)
         return estimate
 
-    def tiles_out_of_place(self):
+    def tiles_out_of_place(self, board, other):
         estimate = 0
         for i in range(1, self.size ** 2):
             value1 = board.puzzle.index(i)
@@ -86,6 +86,7 @@ class Solver:
 
             neighbours = current.get_neighbours()
             for neighbour in neighbours:
+                # print(neighbour)
                 is_closed = closed_states.get(neighbour.hashsum)
                 if is_closed != None:
                     continue
@@ -93,10 +94,10 @@ class Solver:
                 if current.parent != None and neighbour.hashsum == current.parent.hashsum:
                     continue
 
-                heapq.heappush(queue, neighbour)
-
                 neighbour.parent = current
                 neighbour.depth = current.depth + self.g
-                neighbour.heur = self.manhattan_heuristic(neighbour, self.goal) * self.h
+                neighbour.heur = self.heuristic(neighbour, self.goal) * self.h
+
+                heapq.heappush(queue, neighbour)
 
         return None, None, None

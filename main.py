@@ -26,13 +26,15 @@ if __name__ == "__main__":
     else:
         board = Board(args.size, npuzzle_gen.make_puzzle(args.size, True, args.iteration))
 
-    if board.is_solvable():
-        print("OOOPS! Puzzle is not solvable")
+    goal = Board(board.size, generate_goal_puzzle(board.size))
+
+    print(board.puzzle)
+    if not board.is_solvable(goal):
+        print("WhOOOPS! Puzzle is not solvable")
         print(board)
         sys.exit()
 
-    goal = generate_goal_puzzle(board.size)
-    solver = Solver(board.size, Board(board.size, goal), args.heuristic, args.type)
+    solver = Solver(board.size, goal, args.heuristic, args.type)
 
     time_start = time.time()
     path, max_memory, openstate_len = solver.solve(board)
@@ -46,12 +48,14 @@ if __name__ == "__main__":
     print("\nMaximum memory used is = %d" % max_memory)
     print("Openstates lost after resolving = %d" % openstate_len)
     print("Moves made to solve = %d" % len(path))
-    print("Time spent for calculations %.2f s" % calculation_time)
+    print("Time spent for calculations %.5f s" % calculation_time)
     print("Authors: rvolovik, vpopovyc")
 
     quit = ''
     while quit != 'y' or quit != 'Y' or quit != 'n':
         quit = input("Would you like to see all the steps? 'Y' 'n': ")
+        if not len(path):
+            print(board)
         if quit == 'y' or quit == 'Y':
             for step in path:
                 print(step)

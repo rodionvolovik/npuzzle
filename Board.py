@@ -33,21 +33,18 @@ class Board:
             for j in range(i + 1, self.size ** 2):
                 if self.puzzle[i] and self.puzzle[j] and self.puzzle[i] > self.puzzle[j]:
                     inversion += 1
-
         return inversion
 
-    def is_solvable(self):
+    def is_solvable(self, goal):
         inversion = self.get_inversion()
+        inversion_goal = goal.get_inversion()
 
-        if (self.size & 1):
-            return not inversion & 1
-        else:
-            pos_0 = self.puzzle.index(0) / self.size
-            print(self.puzzle, pos_0)
-            if pos_0 & 1:
-                return not inversion & 1
-            else:
-                return inversion & 1
+        if self.size % 2:
+            inversion_goal += goal.puzzle.index(0)
+            inversion = self.puzzle.index(0)
+        print(inversion, inversion_goal)
+
+        return not inversion_goal % 2 == inversion % 2
 
     def create_coordinate_list(self):
         coordinates = {}
