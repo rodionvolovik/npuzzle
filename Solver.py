@@ -10,13 +10,10 @@ class Solver:
 
         if heuristic == "M":
             self.heuristic = self.manhattan_heuristic
-            print("You have chosen Manhattan distance as heuristic function")
         elif heuristic == "E":
             self.heuristic = self.euclidian_distance
-            print("You have chosen Euclidus distance as heuristic function")
         elif heuristic == "T":
             self.heuristic = self.tiles_out_of_place
-            print("You have Tiles-out-of-place as heuristic function")
 
         if greedy and greedy == "g":
             self.g = 0
@@ -54,8 +51,6 @@ class Solver:
             if (x1 - x2) + (y1 - y2) != 0:
                 estimate += 1
         return estimate
-            # x1, y1 = board.coordinates[i][0], board.coordinates[i][1]
-            # x2, y2 = self.goal.coordinates[i][0], self.goal.coordinates[i][1]
 
 
     # A* algorithm implementation

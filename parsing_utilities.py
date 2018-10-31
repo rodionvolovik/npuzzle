@@ -6,7 +6,7 @@ def check_puzzle_consistency(matrix, size):
     ref_matrix = [i for i in range(0, size ** 2)]
     if sorted(matrix) != ref_matrix:
         if len(matrix) != len(ref_matrix):
-            print("OOOPS! Puzzle should have %d elements instead of %d", size ** 2, len(matrix))
+            print("OOOPS! Puzzle should have %d elements instead of %d" % (size ** 2, len(matrix)))
             sys.exit()
         print("OOOPS! Puzzle elements should be sequential and not repeating")
         sys.exit()
@@ -39,14 +39,23 @@ def read_file(path_to_file):
                 print("OOOPS! Please, provide a matrix size")
                 sys.exit()
         else:
-            match = re.match("^([0-9]+\s?){%d,}" % size, line)
-            if match:
-                elements = match.group().split()
-                if len(elements) > size:
+            elements = line.split()
+            numbers = []
+            if len(elements):
+                for element in elements:
+                    element = element.strip()
+                    match = re.match("^([0-9]+)", element)
+                    if match:
+                        numbers.append(int(element))
+                    else:
+                        print("OOOPS! Something is wrong, dude")
+                        sys.exit()
+                if len(numbers) != size:
                     print("OOOPS! Something is wrong, dude")
                     sys.exit()
-                for item in elements:
-                    matrix.append(int(item))
+                for item in numbers:
+                    if item != "":
+                        matrix.append(int(item))
             else:
                 print("OOOPS! Provided puzzle isn't correct")
                 sys.exit()

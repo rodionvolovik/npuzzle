@@ -27,12 +27,12 @@ if __name__ == "__main__":
         board = Board(args.size, npuzzle_gen.make_puzzle(args.size, True, args.iteration))
 
     goal = Board(board.size, generate_goal_puzzle(board.size))
-    print(goal)
     if not board.is_solvable(goal):
         print("WhOOOPS! Puzzle is not solvable")
         print(board)
         sys.exit()
 
+    print("Solving...")
     solver = Solver(board.size, goal, args.heuristic, args.type)
 
     time_start = time.time()
