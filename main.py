@@ -1,8 +1,9 @@
+
 import argparse
 import sys
 from Solver import Solver
 from Board import Board
-from parsing_utilities import generate_aim_puzzle, read_file
+from parsing_utilities import generate_goal_puzzle, read_file
 import npuzzle_gen
 
 
@@ -28,22 +29,26 @@ if __name__ == "__main__":
 
     # @todo check solvability
     # if not board.is_solvable():
-    #     print("ERROR - Puzzle is not solvable")
+    #     print("OOOPS! Puzzle is not solvable")
     #     sys.exit(1)
 
-    solver = Solver(board, args.heuristic)
-    result = solver.solve(board)
-    print("RESULT", result[0], result[1], result[2])
+    goal = generate_goal_puzzle(board.size)
+    solver = Solver(board.size, Board(board.size, goal), args.heuristic)
+    path, max_memory, openstate_len = solver.solve(board)
 
-    path = []
-    x = result[0]
-    while x.parent:
-        path.append(x)
-        x = x.parent
-    path.reverse()
+    print("\nMaximum memory used is = %d" % max_memory)
+    print("Openstates lost after resolving = %d" % openstate_len)
+    print("Moves made to solve = %d" % len(path))
+    print("Authors: rvolovik, vpopovyc")
 
-    for p in path:
-        print(p.puzzle_tuple[0])
-        print(p.puzzle_tuple[1])
-        print(p.puzzle_tuple[2])
-        print("------")
+    quit = ''
+    while quit != 'y' or quit != 'Y' or quit != 'n':
+        quit = input("Would you like to see all the steps? 'Y' 'n': ")
+        if quit == 'y' or quit == 'Y':
+            for step in path:
+                print(step)
+            print("\nThanks for watching :)")
+            break
+        else:
+            break
+

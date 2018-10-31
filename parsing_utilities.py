@@ -6,14 +6,44 @@ def check_puzzle_consistency(matrix, size):
     ref_matrix = [i for i in range(0, size ** 2)]
     if sorted(matrix) != ref_matrix:
         if len(matrix) != len(ref_matrix):
-            print("ERROR - Puzzle should have %d elements instead of %d", size ** 2, len(matrix))
+            print("OOOPS! Puzzle should have %d elements instead of %d", size ** 2, len(matrix))
             sys.exit()
-        print("ERROR - Puzzle elements should be sequential and not repeating")
+        print("OOOPS! Puzzle elements should be sequential and not repeating")
         sys.exit()
 
 
+def read_file(path_to_file):
+    size = 0
+    matrix = []
+    file = open(path_to_file)
+    for line in file:
+        if line.strip().startswith("#"):
+            continue
+        try:
+            line = line.split("#")[0].strip()
+        except:
+            pass
+        if size == 0:
+            match = re.match("^([0-9]+\s?)", line)
+            if match:
+                size = int(match.group())
+            else:
+                print("OOOPS! Please, provide a matrix size")
+                sys.exit()
+        else:
+            match = re.match("^([0-9]+\s?){%d}" % size, line)
+            if match:
+                elements = match.group().split()
+                for item in elements:
+                    matrix.append(int(item))
+            else:
+                print("OOOPS! Provided puzzle isn't correct")
+                sys.exit()
+    check_puzzle_consistency(matrix, size)
+    return size, matrix
+
 # @todo do refactor
-def generate_aim_puzzle(size):
+def generate_goal_puzzle(size):
     k = size ** 2
     matrix_goal = [[0 for i in range(size)] for j in range(size)]
     elements_position = k * [[None, None]]
@@ -47,37 +77,9 @@ def generate_aim_puzzle(size):
             fill_row(i - 1, column - 1,  -1, num)
     fill_row(0, 0, 1, 1)
     matrix_goal[elements_position[k - 1][0]][elements_position[k - 1][1]] = 0
-    # optimize access time by creating a tuple for reference matrix
-    matrix_goal = tuple(tuple(line) for line in matrix_goal)
-    return matrix_goal, elements_position
+    puzzle = []
+    for i in range(size):
+        for j in range(size):
+            puzzle.append(matrix_goal[i][j])
+    return puzzle
 
-
-def read_file(path_to_file):
-    size = 0
-    matrix = []
-    file = open(path_to_file)
-    for line in file:
-        if line.strip().startswith("#"):
-            continue
-        try:
-            line = line.split("#")[0].strip()
-        except:
-            pass
-        if size == 0:
-            match = re.match("^([0-9]+\s?)", line)
-            if match:
-                size = int(match.group())
-            else:
-                print("ERROR - Please, provide a matrix size")
-                sys.exit()
-        else:
-            match = re.match("^([0-9]+\s?){%d}" % size, line)
-            if match:
-                elements = match.group().split()
-                for item in elements:
-                    matrix.append(int(item))
-            else:
-                print("ERROR - Provided puzzle isn't correct")
-                sys.exit()
-    check_puzzle_consistency(matrix, size)
-    return size, matrix
