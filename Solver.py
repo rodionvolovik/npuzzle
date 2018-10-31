@@ -96,7 +96,7 @@ class Solver:
                 heapq.heappush(queue, neighbour)
 
                 neighbour.parent = current
-                neighbour.depth = current.depth + self.g # @todo Change to constant value of uniform-cost search
+                neighbour.depth = current.depth + self.g
                 neighbour.heur = self.manhattan_heuristic(neighbour, self.goal) * self.h
 
         return None, None, None

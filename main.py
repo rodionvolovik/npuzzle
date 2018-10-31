@@ -7,7 +7,6 @@ import npuzzle_gen
 import sys
 
 
-# @ todo fix when size is even number
 if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(prog='npuzzle')
