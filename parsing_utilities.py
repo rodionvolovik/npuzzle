@@ -15,14 +15,23 @@ def check_puzzle_consistency(matrix, size):
 def read_file(path_to_file):
     size = 0
     matrix = []
-    file = open(path_to_file)
+    try:
+        file = open(path_to_file)
+    except:
+        print("OOOPS! This is not a file $(")
+        sys.exit()
+    # @todo check if there is information
+    lines = []
     for line in file:
-        if line.strip().startswith("#"):
-            continue
         try:
             line = line.split("#")[0].strip()
         except:
             pass
+        if line.strip().startswith("#") or line == "":
+            continue
+        lines.append(line)
+    print(lines)
+    for line in lines:
         if size == 0:
             match = re.match("^([0-9]+\s?)", line)
             if match:
@@ -31,9 +40,12 @@ def read_file(path_to_file):
                 print("OOOPS! Please, provide a matrix size")
                 sys.exit()
         else:
-            match = re.match("^([0-9]+\s?){%d}" % size, line)
+            match = re.match("^([0-9]+\s?){%d,}" % size, line)
             if match:
                 elements = match.group().split()
+                if len(elements) > size:
+                    print("OOOPS! Something is wrong, dude")
+                    sys.exit()
                 for item in elements:
                     matrix.append(int(item))
             else:
