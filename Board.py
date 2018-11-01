@@ -41,9 +41,9 @@ class Board:
 
         if self.size % 2:
             inversion_goal += goal.puzzle.index(0)
-            inversion_self = self.puzzle.index(0)
+            inversion_self += self.puzzle.index(0)
 
-        return not inversion_goal % 2 == inversion_self % 2
+        return inversion_goal % 2 == inversion_self % 2
 
     def create_coordinate_list(self):
         coordinates = {}

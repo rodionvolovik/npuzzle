@@ -1,5 +1,4 @@
 # @todo Optimize A* algorithm for N > 3
-# @todo Figure out inversion problem
 # @todo Refactor parsing_utilities
 # @todo Add more documentation to README.md
 
